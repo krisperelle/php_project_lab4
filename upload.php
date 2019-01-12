@@ -62,7 +62,7 @@ if(empty($errors)){
         echo '<p>"uploaded"</p>';
       } else{
         foreach($errors as $err){
-          echo '<p>$err</p>';
+          echo $err;
         }
       }
     }

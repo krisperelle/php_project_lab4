@@ -1,5 +1,11 @@
 <?php
-include 'conf.php';
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+include('conf.php');
+require_once('functions.php');
 session_start();
 ?>
 
@@ -21,18 +27,20 @@ session_start();
     ?>
     <li><a href="login.php" class="<?php echo($current_page == 'login.php')?'active':NULL?>">Login</a></li>
     <?php } ?>
+    <li><a href="browse.php" class="<?php echo($current_page == 'browse.php')?'active':NULL?>">Browse books</a></li>
+    <li><a href="mybooks.php" class="<?php echo($current_page == 'mybooks.php')?'active':NULL?>">My books</a></li>
+    <li><a href="contacts.php" class="<?php echo($current_page == 'contacts.php')?'active':NULL?>">Contacts</a></li>
+    <?php if (isset($_SESSION['role_type']) && isset($_SESSION['login'])) { ?> <!--ar yra tipas ir logged-->
+    <li><a href="gallery.php" class="<?php echo($current_page == 'gallery.php')?'active':NULL?>">Gallery</a></li>
+      <?php if (in_array($_SESSION['role_type'], ['admin', 'moderator'])) { ?> <!--jei tipas yra masyve, ar yra reiksme viena is dvieju, tada atsiranda control page-->
+      <li><a href="<?= $_SESSION['role_type'] == 'admin' ? 'admin.php' : 'moderator.php' ?>" class="<?= (in_array($current_page, ['admin.php', 'moderator.php'])) ? 'active' : NULL ?>">Control page</a></li>
+      <!--: else-->
+      <?php } ?>
+    <?php } ?>
     <?php
     if(isset($_SESSION['login'])) {
     ?>
     <li><a href="logout.php" class="<?php echo($current_page == 'logout.php')?'active':NULL?>">Logout</a></li>
-    <?php } ?>
-    <li><a href="browse.php" class="<?php echo($current_page == 'browse.php')?'active':NULL?>">Browse books</a></li>
-    <li><a href="mybooks.php" class="<?php echo($current_page == 'mybooks.php')?'active':NULL?>">My books</a></li>
-    <li><a href="contacts.php" class="<?php echo($current_page == 'contacts.php')?'active':NULL?>">Contacts</a></li>
-    <?php
-    if (isset($_SESSION['role_type']) && isset($_SESSION['login'])) {
-    ?>
-    <li><a href="gallery.php" class="<?php echo($current_page == 'gallery.php')?'active':NULL?>">Gallery</a></li>
     <?php } ?>
   </ul>
 </header>
