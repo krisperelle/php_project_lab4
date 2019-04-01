@@ -19,3 +19,6 @@
 
     </body>
 </html>
+
+//isset determines if a variable is set and is not NULL
+//data about the user thats stored on the server, aka something that keeps you logged into a website even if you close the browser and open it once again

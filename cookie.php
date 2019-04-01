@@ -23,3 +23,4 @@ setcookie('counter', $count, time() + 24 * 3600, '/', 'localhost', false);
 </html>
 
 //cookies are longer than sessions
+//data stored in the browser about the user

@@ -1,11 +1,13 @@
 <?php
-// include('conf.php');
 include('database.php');
+
+//connects to the database
 function getDb() {
   include('conf.php');
   return dbConnect($dbserver, $dbuser, $dbpass, $dbname);
 }
 
+//gets authors from the database and sorts them by name
 function getAuthors() {
  $db = getDb();
  $query = "SELECT * From Author ORDER by Name, LastName asc";
@@ -16,6 +18,7 @@ function getAuthors() {
  return $authors;
 }
 
+//same as with author
 function getPublishers() {
   $db = getDb();
   $query = "SELECT * From Publisher ORDER by Name asc";
@@ -26,6 +29,7 @@ function getPublishers() {
   return $publishers;
 }
 
+//creates a new user if everything in the second if is correctly filled
 function createUser() {
   if(isset($_POST['submit_user'])) {
     //if button was pressed
@@ -49,15 +53,18 @@ function createUser() {
   }
 }
 
+//udates user and the password
 function updateUser(int $userID) {
   //jei iskviesta be id bus klaida, reiskia kad id skaicius, null reiskia kad id nera, ir negalesim updateint
   if(isset($_POST['submit_user'])) {
+    //kai paspaustas mygtukas
     $db = getDb();
     // update
     //praleist visus per entities
     $query = "UPDATE User SET Name = ?, LastName = ?, Address = ?, Email = ? WHERE id = ?";
     $stmt = $db->prepare($query);
     $stmt->bind_param('ssssi', $_POST['Name'], $_POST['LastName'], $_POST['Address'], $_POST['Email'], $userID);
+    //binds variables to a prepared statement as parameters
     $stmt->execute();
     $stmt->close();
 
@@ -73,6 +80,7 @@ function updateUser(int $userID) {
   }
 }
 
+//deletes user
 function deleteUser(int $userID) {
   $db = getDb();
   $query = "DELETE FROM User WHERE id = ?";
@@ -82,6 +90,7 @@ function deleteUser(int $userID) {
   $stmt->close();
 }
 
+//to edit user
 function getUserByID(int $userID) {
   $db = getDb();
   $sql = "SELECT Name, LastName, Address, Email FROM User WHERE id = ?";
@@ -89,6 +98,7 @@ function getUserByID(int $userID) {
   $stmt1->bind_param('i',$userID);
   $stmt1->execute();
   $stmt1->store_result();
+  //transfers a result set from the last query
   $stmt1->bind_result($name, $last_name, $address, $email);
   $stmt1->fetch();
   $stmt1->close();
@@ -101,6 +111,7 @@ function getUserByID(int $userID) {
   ];
 }
 
+//checks if the users are regular
 function getUserWithRoles() {
   $db = getDb();
   $queryList = "SELECT * FROM User WHERE rolesID is NULL";
@@ -126,6 +137,7 @@ function getBooks() {
   return $books;
 }
 
+//updates book same as with user
 function updateBook($book_id) {
     $db = getDb();
     $query = "UPDATE Book SET ISBN = ?, Title = ?, Pages = ?, Version = ?, PublisherID = ?, YearPublished = ?  WHERE id = ?";
@@ -133,7 +145,7 @@ function updateBook($book_id) {
     $stmt->bind_param('ssiiiii', $_POST['ISBN'], $_POST['Title'], $_POST['Pages'], $_POST['Version'], $_POST['publisher'], $_POST['Publishing_year'], $book_id);
     $stmt->execute();
     $stmt->close();
-    updateBookAuthors($book_id, $_POST['authors']);
+    updateBookAuthors($book_id, $_POST['authors']); //updates book with the author too
 }
 
 function createBook() {
@@ -157,6 +169,7 @@ function createBook() {
   updateBookAuthors($bookID, $authors);
 }
 
+//updats authors which belong to a book
 function updateBookAuthors(int $bookId, array $authorIds=[]) {
   $db = getDb();
   $query = "DELETE FROM BookAuthor WHERE BookID = ?";
@@ -172,18 +185,21 @@ function updateBookAuthors(int $bookId, array $authorIds=[]) {
   $stmt->close();
 }
 
- function getAuthorsStringByID($bookId) {
+function getAuthorsStringByID($bookId) {
    $db = getDb();
    $query = "SELECT concat(a.Name, ' ', a.LastName) AS fullname FROM Author a JOIN BookAuthor ba ON a.AuthorID = ba.AuthorID WHERE ba.BookID = ?";
+   //adds two or more expressions together
    $stmt = $db->prepare($query);
    $stmt->bind_param('i', $bookId);
    $stmt->execute();
    $authors = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
    $stmt->close();
    return implode(', ', array_column($authors, 'fullname'));
+   // is vieno stulpelio
+   //sujungia kaip string
  }
 
- function getBookAuthorsIds($bookId) {
+function getBookAuthorsIds($bookId) {
    $db = getDb();
    $query = "SELECT * FROM BookAuthor WHERE BookID = ?";
 
@@ -230,8 +246,8 @@ function getBookById($book_id) {
 
 function setBookReserved($isbn, $reserved = 0) {
   $db = getDb();
-  $q2 = "UPDATE Book SET Reserved=? WHERE ISBN=?";
-  $stmt2=$db->prepare($q2);
+  $query = "UPDATE Book SET Reserved=? WHERE ISBN=?";
+  $stmt2=$db->prepare($query);
   $stmt2->bind_param('is', $reserved, $isbn);
   $stmt2->execute();
   $stmt2->close();
@@ -240,7 +256,7 @@ function setBookReserved($isbn, $reserved = 0) {
 function search($search = '') {
   $db = getDb();
   $search = htmlentities(trim($search));
-  #connects tables to the middle one where books in browse are pulled from
+  //connects tables to the middle one where books in browse are pulled from
   $search = '%'.$search.'%';
 
   $query = "SELECT Book.Title, Book.ISBN, Author.Name, Author.LastName FROM Book
@@ -250,7 +266,7 @@ function search($search = '') {
     AND (Book.Title LIKE ? OR Author.Name LIKE ? OR Author.LastName LIKE ?)";
 
   $stmt = $db->prepare($query);
-  // var_dump($stmt->query());
+  //var_dump($stmt->query());
   $stmt->bind_param('sss', $search, $search, $search);
 
   $stmt->bind_result($Title, $ISBN, $AuthorN, $AuthorL);

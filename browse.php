@@ -35,7 +35,7 @@ if(isset($_POST['search'])) {
   <theader></theader>
   <tbody>
   <?php
-  foreach ($searchResult as $item) {?>
+  foreach ($searchResult as $item) {?> <!-- runs over searchResults and sets a value to each one-->
 <tr>
     <td><?= $item['title'] ?></td>
     <td><?= $item['isbn'] ?></td>
