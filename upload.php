@@ -3,11 +3,11 @@
 session_start();
 
 //global var
-if(!isset($_SESSION['login'])){
-  header('location:login.php');
-}
 
-if (file_exists ['uploads']);
+/*if(!isset($_SESSION['login'])){
+  header('location:login.php');
+}*/
+
 if(isset($_FILES['fileupload'])){
   if (!file_exists ("uploads")) {
   mkdir("uploads");
@@ -18,7 +18,7 @@ if(isset($_FILES['fileupload'])){
 $maxsize = 2000000;
 
 $allowed = array('jpg', 'jpeg', 'png', 'gif');
-$ext = substr($_FILES['fileupload']['name'], strpos($_FILES['fileupload']['name'], '.')+1));
+$ext = substr($_FILES['fileupload']['name'], strpos($_FILES['fileupload']['name'], '.')+1);
 
 //take file name and upload them to the server
 //upload name to DB

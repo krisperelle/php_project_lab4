@@ -3,7 +3,7 @@
 if ($_SERVER['REQUEST_METHOD'] == 'GET' AND isset($_GET['delete_book'])) {
   deleteBook($_GET['delete_book']);
 }
-
+//checks if thats right and calls function
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if(isset($_GET['book_id'])) {
     updateBook($_GET['book_id']);
@@ -11,11 +11,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     createBook();
   }
 }
-
+//if submit and url has bookid then proceeds
 if ($_SERVER['REQUEST_METHOD'] == 'GET' AND isset($_GET['book_id'])) {
   $bookEdit = getBookById($_GET['book_id']);
   $bookAuthorIds = getBookAuthorsIds($_GET['book_id']);
 }
+//when pressed edit forms the lower list and sets var
  ?>
  <form action="" method="post">
  <input class="cont" type="text" name="ISBN" placeholder="ISBN" value="<?= isset($bookEdit['book_isbn']) ? $bookEdit['book_isbn']:"" ?>">

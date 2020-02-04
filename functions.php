@@ -14,6 +14,7 @@ function getAuthors() {
  $stmt = $db->prepare($query);
  $stmt->execute();
  $authors = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+ //ispassina array
  $stmt->close();
  return $authors;
 }
@@ -70,7 +71,6 @@ function updateUser(int $userID) {
 
     // password update
     if (isset($_POST['Password']) and strlen($_POST['Password']) >= 6) {
-      //praleist pass per entities
       $query = "UPDATE User SET Password = ? WHERE id = ?";
       $stmt = $dn->prepare($query);
       $stmt->bind_param('si', md5($_POST['Password']), $userID);
@@ -98,7 +98,7 @@ function getUserByID(int $userID) {
   $stmt1->bind_param('i',$userID);
   $stmt1->execute();
   $stmt1->store_result();
-  //transfers a result set from the last query
+  //transfers result set from the last query
   $stmt1->bind_result($name, $last_name, $address, $email);
   $stmt1->fetch();
   $stmt1->close();
@@ -264,6 +264,7 @@ function search($search = '') {
   LEFT JOIN Author ON Author.AuthorID = BookAuthor.AuthorID
     WHERE Book.Reserved = 0
     AND (Book.Title LIKE ? OR Author.Name LIKE ? OR Author.LastName LIKE ?)";
+    //bet kurioj vietoj ta fraze
 
   $stmt = $db->prepare($query);
   //var_dump($stmt->query());
