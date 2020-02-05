@@ -24,7 +24,7 @@ session_start();
     <li><a href="about.php" class="<?php echo($current_page == 'about.php')?'active':NULL?>">About Us</a></li>
     <?php
     if (!isset($_SESSION['login'])) {
-    ?> <!-- jeigu neprisijunges tai rodys -->
+    ?>
     <li><a href="login.php" class="<?php echo($current_page == 'login.php')?'active':NULL?>">Login</a></li>
     <?php } ?>
     <li><a href="browse.php" class="<?php echo($current_page == 'browse.php')?'active':NULL?>">Browse books</a></li>
@@ -32,9 +32,10 @@ session_start();
     <li><a href="contacts.php" class="<?php echo($current_page == 'contacts.php')?'active':NULL?>">Contacts</a></li>
     <?php if (isset($_SESSION['role_type']) && isset($_SESSION['login'])) { ?> <!--ar yra tipas ir logged-->
     <li><a href="gallery.php" class="<?php echo($current_page == 'gallery.php')?'active':NULL?>">Gallery</a></li>
+    <li><a href="upload.php" class="<?php echo($current_page == 'upload.php')?'active':NULL?>">Upload</a></li>
       <?php if (in_array($_SESSION['role_type'], ['admin', 'moderator'])) { ?> <!--jei tipas yra masyve, ar yra reiksme viena is dvieju, tada atsiranda control page-->
       <li><a href="<?= $_SESSION['role_type'] == 'admin' ? 'admin.php' : 'moderator.php' ?>" class="<?= (in_array($current_page, ['admin.php', 'moderator.php'])) ? 'active' : NULL ?>">Control page</a></li>
-      <!--: kita-->
+      <!--: else-->
       <?php } ?>
     <?php } ?>
     <?php

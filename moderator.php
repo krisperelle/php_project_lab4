@@ -10,7 +10,14 @@
 
 <h1>Moderator page</h1>
 
-<?php include("bookedit.php") ?>
+<?php 
+if($_SESSION["role_type"] !== "moderator") {
+  header('location:index.php');
+} else {
+  include("bookedit.php");
+  }
+?>
+
 <?php include("footer.php") ?>
 
 </body>

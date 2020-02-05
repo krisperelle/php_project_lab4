@@ -1,6 +1,6 @@
 <?php
 $current_page = explode('/', $_SERVER['PHP_SELF']);
-//returns the filename of the currently executing script
+//my code logic//menu
 $current_page = end($current_page);
 // echo $current_page;
 

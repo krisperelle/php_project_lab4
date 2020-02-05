@@ -9,14 +9,17 @@
 
 
 <?php
-//when return button is pressed it sets book reserved to 0 and links the bookid to the specific book that return was clicked on.
+#has to be at top of page otherwise does not work
+#when return button is pressed it sets book reserved to 0 and links the bookid to the specific book that return was clicked on.
 if (isset($_GET['return'])) {
   setBookReserved($_GET['return']);
 }
-//connecting tables book to book author and author to bookauthor
-//sets book reserved in database to 1 meaning reserved
+
+#Connecting tables book to book author and author to bookauthor
+#sets book reserved in database to 1 meaning reserved
 $myReserved = getMyReserved();
  ?>
+
 
 <body class="background">
 

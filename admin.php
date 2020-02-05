@@ -7,11 +7,17 @@
 </header>
 
 <body class="background">
-add an if to protect admin and moderator in incognito
+
 <h1>Admin page</h1>
 
-<?php include("users.php") ?>
-<?php include("bookedit.php") ?>
+<?php 
+if($_SESSION["role_type"] !== "admin") {
+  header('location:index.php');
+} else {
+  include("users.php");
+  include("bookedit.php"); 
+  }
+?>
 <?php include("footer.php") ?>
 
 </body>

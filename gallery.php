@@ -17,7 +17,6 @@
   #goes through folder uploads and takes each file and stops when the number is =i which is files
   for ($i=0; $i<count($files); $i++){
     	$num = $files[$i];
-      //from files where index is ...
 	    echo '<div class="images"><img src="'.$num.'" alt="random image">'."&nbsp;&nbsp;</div>";
   }
   echo "</div>";

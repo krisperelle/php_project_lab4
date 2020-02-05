@@ -1,62 +1,38 @@
-<?php
-#my session starts
-session_start();
-
-/*if(!isset($_SESSION['login'])){
-  header('location:login.php');
-}*/
-
-if(isset($_FILES['fileupload'])){
-  if (!file_exists ("uploads")) {
-  mkdir("uploads");
-#if folder doesn't exist it creates one,makes a directory
-}
-
-$maxsize = 2000000; #2mb
-
-$allowed = array('jpg', 'jpeg', 'png', 'gif');
-$ext = substr($_FILES['fileupload']['name'], strpos($_FILES['fileupload']['name'], '.')+1);
-
-$errors = array();
-#errors if it doesnt work
-if(in_array($ext, $allowed) === false){
-  $errors[] = 'This is not allowed';
-}
-if($_FILES['fileupload']['size']>$maxsize){
-  $errors[] = 'This file is more than 2MB';
-}
-if(empty($errors)){
- #if there is no errors we will upload the file
-  move_uploaded_file($_FILES['fileupload']['tmp_name'], "uploads/{$_FILES['fileupload']['name']}");
-}
-
-}
-?>
 
 <!doctype html>
 <html>
 
 <body class="background">
   <header>
-    <?php
-    include("header.php") ?>
+    <br />
+<b>Notice</b>:  session_start(): A session had already been started - ignoring in <b>/Applications/MAMP/htdocs/php/php_project_lab4/header.php</b> on line <b>9</b><br />
+
+<head>
+  <title>PHP</title>
+  <link rel="stylesheet" type="text/css" href="main.css">
+  <meta charset="utf-8"/>
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+</head>
+
+<header class="nav">
+  <ul>
+    <li><a href="index.php" class="">Home</a></li>
+    <li><a href="about.php" class="">About Us</a></li>
+        <li><a href="upload.php" class="active">Upload page</a></li>
+    <li><a href="browse.php" class="">Browse books</a></li>
+    <li><a href="mybooks.php" class="">My books</a></li>
+    <li><a href="contacts.php" class="">Contacts</a></li>
+            <li><a href="logout.php" class="">Logout</a></li>
+      </ul>
+</header>
     <h1>File upload</h1>
   </header>
 
   <div>
     <p>Upload here</p>
-    <?php
-    if(isset($errors)) {
-      if(empty($errors)) {
-        echo '<p>"uploaded"</p>';
-      } else{
-        foreach($errors as $err){
-          echo $err;
-        }
-      }
-    }
-     ?>
-  <form method="post" class="my_upload" enctype="multipart/form-data">
+      <form method="post" class="my_upload" enctype="multipart/form-data">
     <input type="file" id="file" name="fileupload">
     <input type="submit" value="Submit" name="submit">
   </form>
@@ -65,8 +41,9 @@ if(empty($errors)){
 
 
 
-  <?php
-  include("footer.php") ?>
+  <footer>
+    <p>© Save me from this hell. All rights reserved. Today is 2020.01.31<br></p>
+</footer>
 </body>
 
 </html>

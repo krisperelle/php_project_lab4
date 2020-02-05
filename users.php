@@ -3,11 +3,14 @@
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET' AND isset($_GET['delete_user'])) {
   deleteUser($_GET['delete_user']);
+  //gets id, runs function
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  if (isset($_GET['user_id'])) {
+
+  if (isset($_GET['user_id'])) { //press button
     updateUser($_GET['user_id']);
+
   } else {
     createUser();
   }
@@ -19,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' AND isset($_GET['user_id'])) {
 }
  ?>
  <form action="" method="post">
- <input class="cont" type="text" name="Name" placeholder="First name" value="<?= isset($editUserData['name']) ? $editUserData['name'] : "" ?>"> <!-- ? shorten if else -->
+ <input class="cont" type="text" name="Name" placeholder="First name" value="<?= isset($editUserData['name']) ? $editUserData['name'] : "" ?>"> # ? shorten if else
  <input class="cont" type="text" name="LastName" placeholder="Last name" value="<?= isset($editUserData['lastN'])? $editUserData['lastN']:"" ?>">
  <input class="cont" type="text" name="Address" placeholder="Address" value="<?= isset($editUserData['address']) ? $editUserData['address']:"" ?>">
  <input class="cont" type="email" name="Email" placeholder="Email address" value="<?= isset($editUserData['email'])? $editUserData['email']:"" ?>">
@@ -30,6 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' AND isset($_GET['user_id'])) {
 
 <?php
 $users = getUserWithRoles();
+//select all users that have roles
+//is rezu padaro array ir priskiria users
 ?>
 
  <table>
@@ -54,8 +59,10 @@ $users = getUserWithRoles();
        <td><?php echo $user['Email']?></td>
        <td>
          <a href="?user_id=<?= $user['id'] ?>">Edit</a>
-         <form method='DELETE'><button onclick="return confirm('U SURE?')" class='submit' name='delete_user' value='<?= $user['id'] ?>'>Delete</button></form></td>
-    <?php } ?>
+         <form method='GET'><button onclick="return confirm('U SURE?')" class='submit' name='delete_user' value='<?= $user['id'] ?>'>Delete</button></form></td>
+    <?php
+  }
+     ?>
      </tr>
    </tbody>
  </table>

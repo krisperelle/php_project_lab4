@@ -1,50 +1,47 @@
 <?php
-//the user is either allowed into hidden page or not
-//check logininfo with the database
-//if not promptlogin failed
+#check logininfo with the database
+#if not promptlogin failed
 
-//type only username and ask for password
-//store the username and password in new variables
-//check if entered password is same as password in db
-//if it is, let them if, if not dont
-//Begin the session
+#store the username and password in new variables
+#check if entered password is same as password in db
+# Begin the session
 
-//HOW TO PROTECT AGAINST SESSION HIJACKING
 include("conf.php");
-//Open the Database
+# Open the Database
 @ $db = new mysqli($dbserver, $dbuser, $dbpass, $dbname);
-//Check if able to connect or not
+# Check if able to connect or not
 if($db->connect_error){
   echo "Connection failed, because " . $db->connect_error;
   exit();
 }
-//checks if login used correctly
+#kai mygtukas paspaudziamas
 if(isset($_POST) && !empty($_POST)){
   $mynic = mysqli_real_escape_string($db, $_POST['username']);
   $mypass = mysqli_real_escape_string($db, $_POST['password']);
-  //mysqli_real_escape_string is used to prevent SQL injection
-  //htmlentities() from XSS
-  //so input form knows not to take any code, any code is banned
-  //$mynic = mysqli_real_escape_string($db, $mynic);
+  #checks if matches db
+  #mysqli_real_escape_string is used to prevent SQL injection
+  #so input form knows not to take any code, any code is banned
 $query =  "SELECT u.Email, u.Password, r.Type FROM User u LEFT JOIN Roles r ON u.rolesID = r.roleID WHERE u.Email = ?";
-//identifies table name
+#identifies table name
 
 $stmt = $db->prepare($query);
 #echo $query;
-$stmt->bind_param('s', $mynic); //this says it is a string and the value is whatever $mynic is
+$stmt->bind_param('s', $mynic); #this says it is a string and the value is whatever $myusername is
+# where ? look at nickname
 $stmt->execute();
 
 $stmt->bind_result($dbemail, $dbpassword, $dbrole);
 
 while($stmt->fetch()) {
+ #while i have that result
   if(md5($mypass) == strtolower($dbpassword)){
     #md5 unhashes pass from the database
     session_start();
     $_SESSION['login']= $dbemail;
     $_SESSION['role_type']= $dbrole;
+    #stores in session, says a user is logged in
 
     switch ($dbrole) {
-      //compares to same values in different cases
       case 'admin':
       header('location:admin.php');
         break;
@@ -52,7 +49,7 @@ while($stmt->fetch()) {
       header('location:moderator.php');
         break;
       default:
-      header('location:upload.php');
+      header('location:browse.php');
         break;
     }
 
