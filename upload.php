@@ -1,8 +1,6 @@
 <?php
-//my session starts
+#my session starts
 session_start();
-
-//global var
 
 /*if(!isset($_SESSION['login'])){
   header('location:login.php');
@@ -11,22 +9,16 @@ session_start();
 if(isset($_FILES['fileupload'])){
   if (!file_exists ("uploads")) {
   mkdir("uploads");
-  //if folder doesn't exist it creates one,makes a directory
+#if folder doesn't exist it creates one,makes a directory
 }
 
-//2m bytes=2MB
-$maxsize = 2000000;
+$maxsize = 2000000; #2mb
 
 $allowed = array('jpg', 'jpeg', 'png', 'gif');
 $ext = substr($_FILES['fileupload']['name'], strpos($_FILES['fileupload']['name'], '.')+1);
 
-//take file name and upload them to the server
-//upload name to DB
-//upload picture to server
-
 $errors = array();
-
-//errors if it doesnt work
+#errors if it doesnt work
 if(in_array($ext, $allowed) === false){
   $errors[] = 'This is not allowed';
 }
@@ -34,7 +26,7 @@ if($_FILES['fileupload']['size']>$maxsize){
   $errors[] = 'This file is more than 2MB';
 }
 if(empty($errors)){
-  //if there is no errors we will upload the file
+ #if there is no errors we will upload the file
   move_uploaded_file($_FILES['fileupload']['tmp_name'], "uploads/{$_FILES['fileupload']['name']}");
 }
 
